@@ -1,0 +1,14 @@
+{
+  "name": "write-yaml-front-matter",
+  "version": "0.0.1",
+  "description": "Easily add/change data in YAML front matter",
+  "main": "index.js",
+  "repository": "git@github.com:mikrostew/write-yaml-front-matter.git",
+  "author": "Michael Stewart <mikrostew@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "volta": {
+    "node": "12.18.3",
+    "yarn": "1.22.5"
+  }
+}
