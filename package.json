@@ -10,5 +10,8 @@
   "volta": {
     "node": "12.18.3",
     "yarn": "1.22.5"
+  },
+  "dependencies": {
+    "yaml": "^1.10.0"
   }
 }
