@@ -39,6 +39,7 @@ function readFile(file) {
           console.log('(start of front matter)');
         } else {
           // if the first line is not '---', assume there is no front matter
+          // https://jekyllrb.com/docs/front-matter/
           console.log('(no front matter)');
         }
       } else {
@@ -100,6 +101,9 @@ function readFile(file) {
 
 }
 
+
+
+// TODO: real tests, for when I want to refactor all this mess
 readFile('./test-file.md').then((yaml) => console.log(yaml));
 
 // TODO
