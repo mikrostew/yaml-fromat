@@ -4,14 +4,6 @@ const expect = require('chai').expect;
 describe('add-data', () => {
 
   describe('empty input', () => {
-    // TODO: this currently returns null
-    it.skip('empty data --> empty output', () => {
-      const input = '';
-      const data = {};
-      const expected = '';
-      expect(addData(input, data)).to.equal(expected);
-    });
-
     it('single key/value pair', () => {
       const input = '';
       const data = { key: 'value' };
@@ -81,11 +73,28 @@ describe('add-data', () => {
   // TODO: overwrite y/n
 
   describe('errors', () => {
+    it('adding empty object', () => {
+      const input = '';
+      const data = {};
+      expect(() => addData(input, data)).to.throw();
+    });
 
     it('adding an array', () => {
       const input = '';
       const data = [ 'a', 'b', 'c' ];
       expect(() => addData(input, data)).to.throw("Can't add array at the top level");
+    });
+
+    it('adding a scalar', () => {
+      const input = '';
+      const data = 4;
+      expect(() => addData(input, data)).to.throw();
+    });
+
+    it('adding a boolean', () => {
+      const input = '';
+      const data = false;
+      expect(() => addData(input, data)).to.throw();
     });
 
   });
