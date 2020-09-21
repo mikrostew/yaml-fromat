@@ -1,2 +1,3 @@
-# write-yaml-front-matter
-Easily add/change data in YAML front matter
+# yaml-fromat
+
+> Easily read and write YAML Front Matter
