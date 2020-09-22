@@ -1,65 +1,120 @@
 const addData = require('../lib/add-data');
 const expect = require('chai').expect;
 
+// helpers
+
+function testAddData(initialYaml, inputYaml, expectedYaml) {
+  expect(addData(initialYaml, inputYaml)).to.equal(expectedYaml);
+}
+
+function testAddDataErrors(initialYaml, inputYaml, expectedErrMsg) {
+  expect(() => addData(initialYaml, inputYaml)).to.throw(expectedErrMsg);
+}
+
+
+// tests
+
 describe('add-data', () => {
 
   describe('empty input', () => {
     it('single key/value pair', () => {
-      const input = '';
-      const data = { key: 'value' };
-      const expected = 'key: value';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+'',
+
+{ key: 'value' },
+
+'key: value',
+      );
     });
 
     it('multiple key/value pairs', () => {
-      const input = '';
-      const data = { key: 'value', foo: 'bar' };
-      const expected = 'key: value\nfoo: bar';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+'',
+
+{ key: 'value', foo: 'bar' },
+
+`key: value
+foo: bar`,
+      );
     });
 
     it('complicated input', () => {
-      const input = '';
-      const data = {
-        key: 'value',
-        array: [ 'a', 'b', 'c' ],
-        foo: {
-          bar: 'baz',
-        }
-      };
-      const expected = 'key: value\narray:\n  - a\n  - b\n  - c\nfoo:\n  bar: baz';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+'',
+
+{
+  key: 'value',
+  array: [ 'a', 'b', 'c' ],
+  foo: {
+    bar: 'baz',
+  }
+},
+
+`key: value
+array:
+  - a
+  - b
+  - c
+foo:
+  bar: baz`,
+      );
     });
   });
 
   describe('comments in input', () => {
     it('comment only is a document commentBefore', () => {
-      const input = '# comment';
-      const data = { key: 'value' };
-      // Note that there is an extra blank line here
-      const expected = '# comment\n\nkey: value';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+'# comment',
+
+{ key: 'value' },
+
+// Note that there is an extra blank line here
+`# comment
+
+key: value`,
+      );
     });
 
     it('comment at the beginning is a node commentBefore', () => {
-      const input = '# comment\nfoo: bar';
-      const data = { key: 'value' };
-      const expected = '# comment\nfoo: bar\nkey: value';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+`# comment
+foo: bar`,
+
+{ key: 'value' },
+
+`# comment
+foo: bar
+key: value`,
+      );
     });
 
     it('comment at the end is a document comment 1', () => {
-      const input = 'foo: bar\n# comment';
-      const data = { key: 'value' };
-      const expected = 'foo: bar\nkey: value\n\n# comment';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+`foo: bar
+# comment`,
+
+{ key: 'value' },
+
+`foo: bar
+key: value
+
+# comment`,
+      );
     });
 
     it('comment at the end is a document comment 2', () => {
-      const input = 'foo: bar\n\n# comment';
-      const data = { key: 'value' };
-      const expected = 'foo: bar\nkey: value\n\n# comment';
-      expect(addData(input, data)).to.equal(expected);
+      testAddData(
+`foo: bar
+
+# comment`,
+
+{ key: 'value' },
+
+`foo: bar
+key: value
+
+# comment`,
+    );
     });
 
   });
@@ -70,27 +125,19 @@ describe('add-data', () => {
 
   describe('errors', () => {
     it('adding empty object', () => {
-      const input = '';
-      const data = {};
-      expect(() => addData(input, data)).to.throw();
+      testAddDataErrors('', {}, "Empty object, or not an object");
     });
 
     it('adding an array', () => {
-      const input = '';
-      const data = [ 'a', 'b', 'c' ];
-      expect(() => addData(input, data)).to.throw("Can't add array at the top level");
+      testAddDataErrors('', [ 'a', 'b', 'c' ], "Can't add array at the top level");
     });
 
     it('adding a scalar', () => {
-      const input = '';
-      const data = 4;
-      expect(() => addData(input, data)).to.throw();
+      testAddDataErrors('', 4, "Empty object, or not an object");
     });
 
     it('adding a boolean', () => {
-      const input = '';
-      const data = false;
-      expect(() => addData(input, data)).to.throw();
+      testAddDataErrors('', false, "Empty object, or not an object");
     });
 
   });
