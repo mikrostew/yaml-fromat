@@ -32,45 +32,41 @@ describe('add-data', () => {
     });
   });
 
-  // TODO: these put the comment at the end
-  describe('comment in input', () => {
-    it.skip('empty data --> empty output', () => {
-      const input = '# comment';
-      const data = {};
-      const expected = '';
-      expect(addData(input, data)).to.equal(expected);
-    });
-
-    it.skip('single key/value pair', () => {
+  describe('comments in input', () => {
+    it('comment only is a document commentBefore', () => {
       const input = '# comment';
       const data = { key: 'value' };
-      const expected = '# comment\nkey: value';
+      // Note that there is an extra blank line here
+      const expected = '# comment\n\nkey: value';
       expect(addData(input, data)).to.equal(expected);
     });
 
-    it.skip('multiple key/value pairs', () => {
-      const input = '# comment';
-      const data = { key: 'value', foo: 'bar' };
-      const expected = 'key: value\nfoo: bar';
+    it('comment at the beginning is a node commentBefore', () => {
+      const input = '# comment\nfoo: bar';
+      const data = { key: 'value' };
+      const expected = '# comment\nfoo: bar\nkey: value';
       expect(addData(input, data)).to.equal(expected);
     });
 
-    it.skip('complicated input', () => {
-      const input = '# comment';
-      const data = {
-        key: 'value',
-        array: [ 'a', 'b', 'c' ],
-        foo: {
-          bar: 'baz',
-        }
-      };
-      const expected = 'key: value\narray:\n  - a\n  - b\n  - c\nfoo:\n  bar: baz';
+    it('comment at the end is a document comment 1', () => {
+      const input = 'foo: bar\n# comment';
+      const data = { key: 'value' };
+      const expected = 'foo: bar\nkey: value\n\n# comment';
       expect(addData(input, data)).to.equal(expected);
     });
+
+    it('comment at the end is a document comment 2', () => {
+      const input = 'foo: bar\n\n# comment';
+      const data = { key: 'value' };
+      const expected = 'foo: bar\nkey: value\n\n# comment';
+      expect(addData(input, data)).to.equal(expected);
+    });
+
   });
 
-  // TODO: preserving blank lines in the input
+  // TODO: preserving blank lines in the file
   // TODO: overwrite y/n
+  // TODO: how to input comments?
 
   describe('errors', () => {
     it('adding empty object', () => {
