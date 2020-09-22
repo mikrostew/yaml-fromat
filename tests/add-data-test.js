@@ -33,7 +33,7 @@ describe('add-data', () => {
   });
 
   describe('comments in input', () => {
-    it('comment only', () => {
+    it('comment only is a document commentBefore', () => {
       const input = '# comment';
       const data = { key: 'value' };
       // Note that there is an extra blank line here
@@ -41,29 +41,26 @@ describe('add-data', () => {
       expect(addData(input, data)).to.equal(expected);
     });
 
-    it('comment at the beginning', () => {
+    it('comment at the beginning is a node commentBefore', () => {
       const input = '# comment\nfoo: bar';
       const data = { key: 'value' };
       const expected = '# comment\nfoo: bar\nkey: value';
       expect(addData(input, data)).to.equal(expected);
     });
 
-    // TODO: fails
-    it('comment at the end 1', () => {
+    it('comment at the end is a document comment 1', () => {
       const input = 'foo: bar\n# comment';
       const data = { key: 'value' };
-      const expected = 'foo: bar\n# comment\nkey: value';
+      const expected = 'foo: bar\nkey: value\n\n# comment';
       expect(addData(input, data)).to.equal(expected);
     });
 
-    // TODO: fails
-    it('comment at the end 2', () => {
+    it('comment at the end is a document comment 2', () => {
       const input = 'foo: bar\n\n# comment';
       const data = { key: 'value' };
-      const expected = 'foo: bar\n\n# comment\nkey: value';
+      const expected = 'foo: bar\nkey: value\n\n# comment';
       expect(addData(input, data)).to.equal(expected);
     });
-
 
   });
 
