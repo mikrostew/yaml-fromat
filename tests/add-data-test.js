@@ -1,14 +1,14 @@
-const addData = require('../lib/add-data');
+const addYaml = require('../lib/add-yaml');
 const expect = require('chai').expect;
 
 // helpers
 
-function testAddData(initialYaml, inputYaml, expectedYaml) {
-  expect(addData(initialYaml, inputYaml)).to.equal(expectedYaml);
+function testAddYaml(initialYaml, inputYaml, expectedYaml) {
+  expect(addYaml(initialYaml, inputYaml)).to.equal(expectedYaml);
 }
 
-function testAddDataErrors(initialYaml, inputYaml, expectedErrMsg) {
-  expect(() => addData(initialYaml, inputYaml)).to.throw(expectedErrMsg);
+function testAddYamlErrors(initialYaml, inputYaml, expectedErrMsg) {
+  expect(() => addYaml(initialYaml, inputYaml)).to.throw(expectedErrMsg);
 }
 
 
@@ -18,7 +18,7 @@ describe('add-data', () => {
 
   describe('empty input', () => {
     it('single key/value pair', () => {
-      testAddData(
+      testAddYaml(
 '',
 
 { key: 'value' },
@@ -28,7 +28,7 @@ describe('add-data', () => {
     });
 
     it('multiple key/value pairs', () => {
-      testAddData(
+      testAddYaml(
 '',
 
 { key: 'value', foo: 'bar' },
@@ -39,7 +39,7 @@ foo: bar`,
     });
 
     it('complicated input', () => {
-      testAddData(
+      testAddYaml(
 '',
 
 {
@@ -63,7 +63,7 @@ foo:
 
   describe('comments in input', () => {
     it('comment only is a document commentBefore', () => {
-      testAddData(
+      testAddYaml(
 '# comment',
 
 { key: 'value' },
@@ -76,7 +76,7 @@ key: value`,
     });
 
     it('comment at the beginning is a node commentBefore', () => {
-      testAddData(
+      testAddYaml(
 `# comment
 foo: bar`,
 
@@ -89,7 +89,7 @@ key: value`,
     });
 
     it('comment at the end is a document comment 1', () => {
-      testAddData(
+      testAddYaml(
 `foo: bar
 # comment`,
 
@@ -103,7 +103,7 @@ key: value
     });
 
     it('comment at the end is a document comment 2', () => {
-      testAddData(
+      testAddYaml(
 `foo: bar
 
 # comment`,
@@ -125,19 +125,19 @@ key: value
 
   describe('errors', () => {
     it('adding empty object', () => {
-      testAddDataErrors('', {}, "Empty object, or not an object");
+      testAddYamlErrors('', {}, "Empty object, or not an object");
     });
 
     it('adding an array', () => {
-      testAddDataErrors('', [ 'a', 'b', 'c' ], "Can't add array at the top level");
+      testAddYamlErrors('', [ 'a', 'b', 'c' ], "Can't add array at the top level");
     });
 
     it('adding a scalar', () => {
-      testAddDataErrors('', 4, "Empty object, or not an object");
+      testAddYamlErrors('', 4, "Empty object, or not an object");
     });
 
     it('adding a boolean', () => {
-      testAddDataErrors('', false, "Empty object, or not an object");
+      testAddYamlErrors('', false, "Empty object, or not an object");
     });
 
   });
