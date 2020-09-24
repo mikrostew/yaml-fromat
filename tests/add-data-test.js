@@ -122,23 +122,23 @@ key: value
 
   // TODO: preserving blank lines in the file
   // TODO: overwrite y/n
-  // TODO: how to input comments?
+  // TODO: input comments
 
   describe('errors', () => {
-    it.skip('adding empty object', () => {
-      testAddYamlErrors('', {}, "Empty object, or not an object");
+    it('adding empty yaml', () => {
+      testAddYamlErrors('', '', "Empty input");
     });
 
     it.skip('adding an array', () => {
       testAddYamlErrors('', [ 'a', 'b', 'c' ], "Can't add array at the top level");
     });
 
-    it.skip('adding a scalar', () => {
-      testAddYamlErrors('', 4, "Empty object, or not an object");
+    it('adding a scalar', () => {
+      testAddYamlErrors('', 4, "Could not parse input YAML");
     });
 
-    it.skip('adding a boolean', () => {
-      testAddYamlErrors('', false, "Empty object, or not an object");
+    it('adding a boolean', () => {
+      testAddYamlErrors('', false, "Could not parse input YAML");
     });
 
   });
