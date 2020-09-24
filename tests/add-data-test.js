@@ -16,7 +16,7 @@ function testAddYamlErrors(initialYaml, inputYaml, expectedErrMsg) {
 
 describe('add-data', () => {
 
-  describe('empty input', () => {
+  describe('empty initial yaml', () => {
     it('single key/value pair', () => {
       testAddYaml(
 '',
@@ -62,12 +62,12 @@ foo:
     });
   });
 
-  describe('comments in input', () => {
-    it.skip('comment only is a document commentBefore', () => {
+  describe('comments in initial yaml', () => {
+    it('comment only is a document commentBefore', () => {
       testAddYaml(
 '# comment',
 
-{ key: 'value' },
+'key: value',
 
 // Note that there is an extra blank line here
 `# comment
@@ -76,12 +76,12 @@ key: value`,
       );
     });
 
-    it.skip('comment at the beginning is a node commentBefore', () => {
+    it('comment at the beginning is a node commentBefore', () => {
       testAddYaml(
 `# comment
 foo: bar`,
 
-{ key: 'value' },
+'key: value',
 
 `# comment
 foo: bar
@@ -89,12 +89,12 @@ key: value`,
       );
     });
 
-    it.skip('comment at the end is a document comment 1', () => {
+    it('comment at the end is a document comment 1', () => {
       testAddYaml(
 `foo: bar
 # comment`,
 
-{ key: 'value' },
+'key: value',
 
 `foo: bar
 key: value
@@ -103,13 +103,13 @@ key: value
       );
     });
 
-    it.skip('comment at the end is a document comment 2', () => {
+    it('comment at the end is a document comment 2', () => {
       testAddYaml(
 `foo: bar
 
 # comment`,
 
-{ key: 'value' },
+'key: value',
 
 `foo: bar
 key: value
