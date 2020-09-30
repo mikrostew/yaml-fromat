@@ -115,7 +115,7 @@ key: value
 key: value
 
 # comment`,
-    );
+      );
     });
 
   });
@@ -129,8 +129,8 @@ key: value
       testAddYamlErrors('', '', "Empty input");
     });
 
-    it.skip('adding an array', () => {
-      testAddYamlErrors('', [ 'a', 'b', 'c' ], "Can't add array at the top level");
+    it('adding an array', () => {
+      testAddYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
     });
 
     it('adding a scalar', () => {
