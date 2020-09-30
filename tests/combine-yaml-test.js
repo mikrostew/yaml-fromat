@@ -1,4 +1,4 @@
-const combineYaml = require('../lib/add-yaml');
+const combineYaml = require('../lib/combine-yaml');
 const { expect } = require('chai');
 
 // helpers
