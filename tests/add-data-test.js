@@ -1,24 +1,24 @@
-const addYaml = require('../lib/add-yaml');
-const expect = require('chai').expect;
+const combineYaml = require('../lib/add-yaml');
+const { expect } = require('chai');
 
 // helpers
 
-function testAddYaml(initialYaml, inputYaml, expectedYaml) {
-  expect(addYaml(initialYaml, inputYaml)).to.equal(expectedYaml);
+function testCombineYaml(initialYaml, inputYaml, expectedYaml) {
+  expect(combineYaml(initialYaml, inputYaml)).to.equal(expectedYaml);
 }
 
-function testAddYamlErrors(initialYaml, inputYaml, expectedErrMsg) {
-  expect(() => addYaml(initialYaml, inputYaml)).to.throw(expectedErrMsg);
+function testCombineYamlErrors(initialYaml, inputYaml, expectedErrMsg) {
+  expect(() => combineYaml(initialYaml, inputYaml)).to.throw(expectedErrMsg);
 }
 
 
 // tests
 
-describe('add-data', () => {
+describe('combine-yaml', () => {
 
   describe('empty initial yaml', () => {
     it('single key/value pair', () => {
-      testAddYaml(
+      testCombineYaml(
 '',
 
 'key: value',
@@ -28,7 +28,7 @@ describe('add-data', () => {
     });
 
     it('multiple key/value pairs', () => {
-      testAddYaml(
+      testCombineYaml(
 '',
 
 `key: value
@@ -40,7 +40,7 @@ foo: bar`,
     });
 
     it('complicated input', () => {
-      testAddYaml(
+      testCombineYaml(
 '',
 
 `key: value
@@ -64,7 +64,7 @@ foo:
 
   describe('comments in initial yaml', () => {
     it('comment only is a document commentBefore', () => {
-      testAddYaml(
+      testCombineYaml(
 '# comment',
 
 'key: value',
@@ -77,7 +77,7 @@ key: value`,
     });
 
     it('comment at the beginning is a node commentBefore', () => {
-      testAddYaml(
+      testCombineYaml(
 `# comment
 foo: bar`,
 
@@ -90,7 +90,7 @@ key: value`,
     });
 
     it('comment at the end is a document comment 1', () => {
-      testAddYaml(
+      testCombineYaml(
 `foo: bar
 # comment`,
 
@@ -104,7 +104,7 @@ key: value
     });
 
     it('comment at the end is a document comment 2', () => {
-      testAddYaml(
+      testCombineYaml(
 `foo: bar
 
 # comment`,
@@ -126,19 +126,19 @@ key: value
 
   describe('errors', () => {
     it('adding empty yaml', () => {
-      testAddYamlErrors('', '', "Empty input");
+      testCombineYamlErrors('', '', "Empty input");
     });
 
     it('adding an array', () => {
-      testAddYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
+      testCombineYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
     });
 
     it('adding a scalar', () => {
-      testAddYamlErrors('', 4, "Could not parse input YAML");
+      testCombineYamlErrors('', 4, "Could not parse input YAML");
     });
 
     it('adding a boolean', () => {
-      testAddYamlErrors('', false, "Could not parse input YAML");
+      testCombineYamlErrors('', false, "Could not parse input YAML");
     });
 
   });
