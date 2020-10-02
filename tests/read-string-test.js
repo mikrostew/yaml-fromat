@@ -85,6 +85,24 @@ thing:
     );
   });
 
+  it('front matter and contents', () => {
+    return testReadString(
+`---
+foo: bar
+thing:
+  only: one
+---
+Here is some text
+
+OK`,
+{
+  foo: 'bar',
+  thing: { only: 'one' },
+  _contents: 'Here is some text\n\nOK',
+},
+    );
+  });
+
   describe('errors', () => {
 
     it('top level scalar', () => {
