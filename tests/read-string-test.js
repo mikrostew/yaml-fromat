@@ -16,7 +16,7 @@ function testReadStringErrors(inputString, expectedErrMsg) {
       throw new Error('Expected this to fail');
     })
     .catch((e) => {
-      expect(e).to.equal(expectedErrMsg);
+      expect(e).to.include(expectedErrMsg);
     });
 }
 
@@ -131,6 +131,24 @@ true
 - c
 ---`,
 'Top level should be an object',
+      );
+    });
+
+    it('top level string', () => {
+      return testReadStringErrors(
+`---
+what
+---`,
+'Top level should be an object',
+      );
+    });
+
+    it('malformed yaml', () => {
+      return testReadStringErrors(
+`---
+oops: [ a, b
+---`,
+'Error parsing YAML in front matter',
       );
     });
 
