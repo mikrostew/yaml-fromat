@@ -16,7 +16,7 @@ function testReadStringErrors(inputString, expectedErrMsg) {
       throw new Error('Expected this to fail');
     })
     .catch((e) => {
-      expect(e).to.include(expectedErrMsg);
+      expect(e.message).to.include(expectedErrMsg);
     });
 }
 
