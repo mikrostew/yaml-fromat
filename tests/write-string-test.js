@@ -38,6 +38,53 @@ foo: bar
 `
       );
     });
+
+    // TODO: some of these should be in combine-yaml
+    it('comment and key/value 1', () => {
+
+      return testWriteString(
+'',
+`# comment
+foo: bar`,
+// note the trailing newline
+`---
+# comment
+foo: bar
+---
+`
+      );
+    });
+
+    it('comment and key/value 2', () => {
+
+      return testWriteString(
+'',
+`foo: bar   # comment`,
+// note the trailing newline
+`---
+foo: bar # comment
+---
+`
+      );
+    });
+
+    // TODO: this fails
+    it.skip('comment and key/value 3', () => {
+
+      return testWriteString(
+'',
+`# comment with space
+
+foo: bar`,
+// note the trailing newline
+`---
+# comment
+foo: bar
+---
+`
+      );
+    });
+
   });
 
   // TODO
