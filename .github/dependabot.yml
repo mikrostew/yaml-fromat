@@ -1,0 +1,13 @@
+version: 2
+updates:
+
+  # Check for NPM dependency updates every week
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # and assign to me
+    assignees:
+      - "mikrostew"
+    reviewers:
+      - "mikrostew"
