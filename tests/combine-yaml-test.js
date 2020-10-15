@@ -17,30 +17,45 @@ function testCombineYamlErrors(initialYaml, inputYaml, expectedErrMsg) {
 describe('combine-yaml', () => {
 
   describe('empty initial yaml', () => {
-    it('single key/value pair', () => {
-      testCombineYaml(
+
+    // TODO: fix this one
+    it.skip('empty input', () => {
+      return testCombineYaml(
 '',
+'',
+'',
+      );
+    });
 
+    it('single key/value pair', () => {
+      return testCombineYaml(
+'',
 'key: value',
-
 'key: value',
       );
     });
 
     it('multiple key/value pairs', () => {
-      testCombineYaml(
+      return testCombineYaml(
 '',
-
 `key: value
 foo: bar`,
-
 `key: value
 foo: bar`,
       );
     });
 
+    // TODO: fix this one
+    it.skip('comment only', () => {
+      return testCombineYaml(
+'',
+'# a comment',
+'# a comment',
+      );
+    });
+
     it('complicated input', () => {
-      testCombineYaml(
+      return testCombineYaml(
 '',
 
 `key: value
@@ -60,16 +75,73 @@ foo:
   bar: baz`,
       );
     });
+
+    it('input with node comment', () => {
+      return testCombineYaml(
+'',
+`# node comment
+foo: bar`,
+`# node comment
+foo: bar`,
+      );
+    });
+
+    it('input with same line comment', () => {
+      return testCombineYaml(
+'',
+'foo: bar   # line comment',
+'foo: bar # line comment',
+      );
+    });
+
+    // TODO: fix this
+    it.skip('input with document comment 1', () => {
+      return testCombineYaml(
+'',
+`# doc comment
+
+foo: bar`,
+`# doc comment
+
+foo: bar`,
+      );
+    });
+
+    // TODO: fix this
+    it.skip('input with document comment 2', () => {
+      return testCombineYaml(
+'',
+`foo: bar
+
+# doc comment`,
+`foo: bar
+
+# doc comment`,
+      );
+    });
+
+  });
+
+  // TODO: kinda important, and this doesn't work
+  describe('replacing values', () => {
+
+    it.skip('replace key/value', () => {
+      return testCombineYaml(
+'foo: bar',
+'foo: baz',
+'foo: baz',
+      );
+    });
+
   });
 
   describe('comments in initial yaml', () => {
+
     it('comment only is a document commentBefore', () => {
-      testCombineYaml(
+      return testCombineYaml(
 '# comment',
-
 'key: value',
-
-// Note that there is an extra blank line here
+// Note the extra blank line
 `# comment
 
 key: value`,
@@ -77,25 +149,39 @@ key: value`,
     });
 
     it('comment at the beginning is a node commentBefore', () => {
-      testCombineYaml(
+      return testCombineYaml(
 `# comment
 foo: bar`,
-
 'key: value',
-
 `# comment
 foo: bar
 key: value`,
       );
     });
 
+    it('comment on same line 1', () => {
+      return testCombineYaml(
+`foo: bar   # comment`,
+'key: value',
+`foo: bar # comment
+key: value`,
+      );
+    });
+
+    // TODO: fix this
+    it.skip('comment on same line 2', () => {
+      return testCombineYaml(
+`foo: bar   # comment`,
+'foo: baz',
+'foo: baz # comment',
+      );
+    });
+
     it('comment at the end is a document comment 1', () => {
-      testCombineYaml(
+      return testCombineYaml(
 `foo: bar
 # comment`,
-
 'key: value',
-
 `foo: bar
 key: value
 
@@ -104,13 +190,11 @@ key: value
     });
 
     it('comment at the end is a document comment 2', () => {
-      testCombineYaml(
+      return testCombineYaml(
 `foo: bar
 
 # comment`,
-
 'key: value',
-
 `foo: bar
 key: value
 
@@ -121,24 +205,25 @@ key: value
   });
 
   // TODO: preserving blank lines in the file
+  describe('preserving blank lines', () => {});
+
   // TODO: overwrite y/n
-  // TODO: input comments
+  describe('overwrite option', () => {});
+
+  // TODO
+  describe('detecting indentation', () => {});
 
   describe('errors', () => {
-    it('adding empty yaml', () => {
-      testCombineYamlErrors('', '', "Empty input");
-    });
-
     it('adding an array', () => {
-      testCombineYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
+      return testCombineYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
     });
 
     it('adding a scalar', () => {
-      testCombineYamlErrors('', 4, "Could not parse input YAML");
+      return testCombineYamlErrors('', 4, "Could not parse input YAML");
     });
 
     it('adding a boolean', () => {
-      testCombineYamlErrors('', false, "Could not parse input YAML");
+      return testCombineYamlErrors('', false, "Could not parse input YAML");
     });
 
   });
