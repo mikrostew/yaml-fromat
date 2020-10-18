@@ -231,8 +231,95 @@ key: value
 
   });
 
-  // TODO: preserving blank lines in the file
-  describe('preserving blank lines', () => {});
+  describe('preserving blank lines', () => {
+
+    it('single blank line 1', () => {
+      return testCombineYaml(
+`# some first thing
+foo: bar
+
+# another thing
+some: thing`,
+'key: value',
+`# some first thing
+foo: bar
+
+# another thing
+some: thing
+key: value`,
+      );
+    });
+
+    it('single blank line 2', () => {
+      return testCombineYaml(
+`# some first thing
+foo: bar
+
+# another thing
+some: thing`,
+'foo: foo',
+`# some first thing
+foo: foo
+
+# another thing
+some: thing`,
+      );
+    });
+
+    it('single blank line 3', () => {
+      return testCombineYaml(
+`# some first thing
+foo: bar
+
+# another thing
+some: thing`,
+'some: rum',
+`# some first thing
+foo: bar
+
+# another thing
+some: rum`,
+      );
+    });
+
+    it('multiple blank lines', () => {
+      return testCombineYaml(
+`# some first thing
+foo: bar
+
+
+# another thing
+some: thing`,
+'key: value',
+`# some first thing
+foo: bar
+
+# another thing
+some: thing
+key: value`,
+      );
+    });
+
+    it('final newline', () => {
+      return testCombineYaml(
+`# some first thing
+foo: bar
+
+# another thing
+some: thing
+`,
+'key: value',
+`# some first thing
+foo: bar
+
+# another thing
+some: thing
+key: value
+`,
+      );
+    });
+
+  });
 
   // TODO: overwrite y/n
   describe('overwrite option', () => {});
