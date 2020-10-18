@@ -84,8 +84,7 @@ foo: bar`,
       );
     });
 
-    // TODO: fix this
-    it.skip('input with document comment 1', () => {
+    it('input with document comment 1', () => {
       return testCombineYaml(
 '',
 `# doc comment
@@ -97,14 +96,39 @@ foo: bar`,
       );
     });
 
-    // TODO: fix this
-    it.skip('input with document comment 2', () => {
+    it('input with document comment 2', () => {
       return testCombineYaml(
 '',
 `foo: bar
 
 # doc comment`,
 `foo: bar
+
+# doc comment`,
+      );
+    });
+
+    it('input with document comment 3', () => {
+      return testCombineYaml(
+'# existing comment',
+`# doc comment
+
+foo: bar`,
+`# doc comment
+
+foo: bar`,
+      );
+    });
+
+    it('input with document comment 4', () => {
+      return testCombineYaml(
+'# existing comment',
+`foo: bar
+
+# doc comment`,
+`# existing comment
+
+foo: bar
 
 # doc comment`,
       );
@@ -134,6 +158,8 @@ foo: bar`,
   - b`,
       );
     });
+
+    // TODO: more tests here
 
   });
 
@@ -216,19 +242,39 @@ key: value
 
   describe('errors', () => {
     it('adding an array', () => {
-      return testCombineYamlErrors('', '- a\n- b\n- c', "Can't add array at the top level");
+      return testCombineYamlErrors('', '- a\n- b\n- c', 'Cannot add non-map items at the top level');
     });
 
     it('adding a scalar', () => {
-      return testCombineYamlErrors('', 4, "Could not parse input YAML");
+      return testCombineYamlErrors('', '4', 'Cannot add non-map items at the top level');
     });
 
     it('adding a boolean', () => {
-      return testCombineYamlErrors('', false, "Could not parse input YAML");
+      return testCombineYamlErrors('', 'false', 'Cannot add non-map items at the top level');
     });
 
     it('adding a comment only', () => {
-      return testCombineYamlErrors('', '# some comment', "Input is only comments");
+      return testCombineYamlErrors('', '# some comment', 'Input is only comments');
+    });
+
+    it('malformed front matter', () => {
+      return testCombineYamlErrors(
+`---
+oops:
+  - a
+  b
+---`,
+'',
+'Error parsing YAML in front matter'
+      );
+    });
+
+    it('malformed input yaml', () => {
+      return testCombineYamlErrors(
+'',
+`oops: [ a, b`,
+'Error parsing input YAML'
+      );
     });
 
   });

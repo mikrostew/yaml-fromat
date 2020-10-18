@@ -9,17 +9,17 @@ function testWriteString(inputString, inputYaml, expectedJson) {
   });
 }
 
-function testWriteStringErrors(inputString, expectedErrMsg) {
-  return writeString(inputString)
+function testWriteStringErrors(inputString, inputYaml, expectedErrMsg) {
+  return writeString(inputString, inputYaml)
     .then(() => {
       throw new Error('[write-string-errors] Expected this to fail');
     })
     .catch((e) => {
       // re-throw that ^^ error instead of checking the message
-      if (e.includes('write-string-errors')) {
+      if (e.message.includes('write-string-errors')) {
         throw e;
       }
-      expect(e).to.include(expectedErrMsg);
+      expect(e.message).to.include(expectedErrMsg);
     });
 }
 
@@ -92,120 +92,82 @@ No front matter here`,
 
   });
 
-  // TODO
-  // it('empty front matter', () => {
-  //   return testWriteString(
-// `---
-// ---`,
-// {
-  // _contents: '',
-// },
-  //   );
-  // });
+  describe('front matter and contents', () => {
 
-  // TODO
-  // it('key/value pair', () => {
-  //   return testWriteString(
-// `---
-// foo: bar
-// ---`,
-// {
-  // foo: 'bar',
-  // _contents: '',
-// },
-  //   );
-  // });
+    it('empty input', () => {
+      return testWriteString(
+`---
+foo: bar
+---
+Some contents`,
+'',
+`---
+foo: bar
+---
+Some contents`,
+      );
+    });
 
-  // TODO
-  // it('complicated stuff', () => {
-  //   return testWriteString(
-// `---
-// foo: bar
-// things:
-// - a
-// - b
-// - c
-// thing:
-  // only: one
-// ---`,
-// {
-  // foo: 'bar',
-  // things: [ 'a', 'b', 'c'],
-  // thing: { only: 'one' },
-  // _contents: '',
-// },
-  //   );
-  // });
+    it('new data', () => {
+      return testWriteString(
+`---
+foo: bar
+---
+Some contents`,
+'key: value',
+`---
+foo: bar
+key: value
+---
+Some contents`,
+      );
+    });
 
-  // TODO
-  // it('front matter and contents', () => {
-  //   return testWriteString(
-// `---
-// foo: bar
-// thing:
-  // only: one
-// ---
-// Here is some text
+    it('change data', () => {
+      return testWriteString(
+`---
+foo: bar
+# goign to change this
+key: value
+---
+Some contents`,
+'key: new value',
+`---
+foo: bar
+# goign to change this
+key: new value
+---
+Some contents`,
+      );
+    });
 
-// OK`,
-// {
-  // foo: 'bar',
-  // thing: { only: 'one' },
-  // _contents: 'Here is some text\n\nOK',
-// },
-  //   );
-  // });
+  });
 
-  // TODO
-  // describe('errors', () => {
 
-  //   it('top level scalar', () => {
-  //     return testWriteStringErrors(
-// `---
-// 5
-// ---`,
-// 'Top level should be an object',
-  //     );
-  //   });
+  describe('errors', () => {
 
-  //   it('top level boolean', () => {
-  //     return testWriteStringErrors(
-// `---
-// true
-// ---`,
-// 'Top level should be an object',
-  //     );
-  //   });
+    it('top level scalar', () => {
+      return testWriteStringErrors(
+`---
+foo: bar
+---`,
+'5',
+'Cannot add non-map items at the top level',
+      );
+    });
 
-  //   it('top level array', () => {
-  //     return testWriteStringErrors(
-// `---
-// - a
-// - b
-// - c
-// ---`,
-// 'Top level should be an object',
-  //     );
-  //   });
+    it('malformed yaml', () => {
+      return testWriteStringErrors(
+`---
+oops:
+  - one
+  two
+---`,
+'',
+'Error parsing YAML in front matter',
+      );
+    });
 
-  //   it('top level string', () => {
-  //     return testWriteStringErrors(
-// `---
-// what
-// ---`,
-// 'Top level should be an object',
-  //     );
-  //   });
-
-  //   it('malformed yaml', () => {
-  //     return testWriteStringErrors(
-// `---
-// oops: [ a, b
-// ---`,
-// 'Error parsing YAML in front matter',
-  //     );
-  //   });
-
-  // });
+  });
 
 });
