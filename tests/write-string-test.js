@@ -9,13 +9,16 @@ function testWriteString(inputString, inputYaml, expectedJson) {
   });
 }
 
-function testReadStringErrors(inputString, expectedErrMsg) {
+function testWriteStringErrors(inputString, expectedErrMsg) {
   return writeString(inputString)
     .then(() => {
-      // TODO: this is not quite right, as this will hit the catch()
-      throw new Error('Expected this to fail');
+      throw new Error('[write-string-errors] Expected this to fail');
     })
     .catch((e) => {
+      // re-throw that ^^ error instead of checking the message
+      if (e.includes('write-string-errors')) {
+        throw e;
+      }
       expect(e).to.include(expectedErrMsg);
     });
 }
@@ -26,9 +29,8 @@ describe('write-string', () => {
 
   describe('empty string', () => {
 
-    // TODO: fix this
-    it.skip('empty input', () => {
-      return testwritestring(
+    it('empty input', () => {
+      return testWriteString(
 '',
 '',
 `---
@@ -36,9 +38,8 @@ describe('write-string', () => {
       );
     });
 
-    // TODO: fix the trailing newline
-    it.skip('key/value', () => {
-      return testwritestring(
+    it('key/value', () => {
+      return testWriteString(
 '',
 'foo: bar',
 `---
@@ -47,8 +48,7 @@ foo: bar
       );
     });
 
-    // TODO: fix the trailing newline
-    it.skip('comment and key/value', () => {
+    it('comment and key/value', () => {
       return testWriteString(
 '',
 `# comment
@@ -160,7 +160,7 @@ No front matter here`,
   // describe('errors', () => {
 
   //   it('top level scalar', () => {
-  //     return testReadStringErrors(
+  //     return testWriteStringErrors(
 // `---
 // 5
 // ---`,
@@ -169,7 +169,7 @@ No front matter here`,
   //   });
 
   //   it('top level boolean', () => {
-  //     return testReadStringErrors(
+  //     return testWriteStringErrors(
 // `---
 // true
 // ---`,
@@ -178,7 +178,7 @@ No front matter here`,
   //   });
 
   //   it('top level array', () => {
-  //     return testReadStringErrors(
+  //     return testWriteStringErrors(
 // `---
 // - a
 // - b
@@ -189,7 +189,7 @@ No front matter here`,
   //   });
 
   //   it('top level string', () => {
-  //     return testReadStringErrors(
+  //     return testWriteStringErrors(
 // `---
 // what
 // ---`,
@@ -198,7 +198,7 @@ No front matter here`,
   //   });
 
   //   it('malformed yaml', () => {
-  //     return testReadStringErrors(
+  //     return testWriteStringErrors(
 // `---
 // oops: [ a, b
 // ---`,

@@ -18,8 +18,7 @@ describe('combine-yaml', () => {
 
   describe('empty initial yaml', () => {
 
-    // TODO: fix this one
-    it.skip('empty input', () => {
+    it('empty input', () => {
       return testCombineYaml(
 '',
 '',
@@ -42,15 +41,6 @@ describe('combine-yaml', () => {
 foo: bar`,
 `key: value
 foo: bar`,
-      );
-    });
-
-    // TODO: fix this one
-    it.skip('comment only', () => {
-      return testCombineYaml(
-'',
-'# a comment',
-'# a comment',
       );
     });
 
@@ -122,14 +112,26 @@ foo: bar`,
 
   });
 
-  // TODO: kinda important, and this doesn't work
   describe('replacing values', () => {
 
-    it.skip('replace key/value', () => {
+    it('replace key/value', () => {
       return testCombineYaml(
 'foo: bar',
 'foo: baz',
 'foo: baz',
+      );
+    });
+
+    it('replace with different type', () => {
+      return testCombineYaml(
+'foo: bar',
+`foo:
+  - a
+  - b
+`,
+`foo:
+  - a
+  - b`,
       );
     });
 
@@ -168,12 +170,11 @@ key: value`,
       );
     });
 
-    // TODO: fix this
-    it.skip('comment on same line 2', () => {
+    it('comment on same line 2', () => {
       return testCombineYaml(
 `foo: bar   # comment`,
 'foo: baz',
-'foo: baz # comment',
+'foo: baz',
       );
     });
 
@@ -224,6 +225,10 @@ key: value
 
     it('adding a boolean', () => {
       return testCombineYamlErrors('', false, "Could not parse input YAML");
+    });
+
+    it('adding a comment only', () => {
+      return testCombineYamlErrors('', '# some comment', "Input is only comments");
     });
 
   });
