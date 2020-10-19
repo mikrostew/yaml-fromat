@@ -12,10 +12,13 @@ function testReadString(inputString, expectedJson) {
 function testReadStringErrors(inputString, expectedErrMsg) {
   return readString(inputString)
     .then(() => {
-      // TODO: this is not quite right, as this will hit the catch()
-      throw new Error('Expected this to fail');
+      throw new Error('[read-string-errors] Expected this to fail');
     })
     .catch((e) => {
+      // re-throw that ^^ error instead of checking the message
+      if (e.message.includes('read-string-errors')) {
+        throw e;
+      }
       expect(e.message).to.include(expectedErrMsg);
     });
 }
