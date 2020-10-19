@@ -36,7 +36,6 @@ describe('read-string', () => {
   it('no front matter', () => {
     return testReadString(
 'no front matter here',
-// TODO: test the contents?
 {
   _contents: 'no front matter here',
 },
