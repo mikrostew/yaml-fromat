@@ -19,9 +19,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^7.11.0",
     "mocha": "^8.2.0"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "^10.12 || >= 12"
   }
 }
