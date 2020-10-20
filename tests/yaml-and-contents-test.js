@@ -5,7 +5,8 @@ const { Readable } = require('stream');
 // helpers
 
 function testReadFromString(inputString, expectedJson) {
-  const readStream = Readable.from(inputString);
+  // need this check for node 10.x
+  const readStream = (inputString === '') ? Readable.from('\n') : Readable.from(inputString);
 
   return yamlAndContentsFromStream(readStream).then((result) => {
     expect(result).to.deep.equal(expectedJson);
@@ -13,7 +14,8 @@ function testReadFromString(inputString, expectedJson) {
 }
 
 function testReadFromStringErrors(inputString, expectedErrMsg) {
-  const readStream = Readable.from(inputString);
+  // need this check for node 10.x
+  const readStream = (inputString === '') ? Readable.from('\n') : Readable.from(inputString);
 
   return yamlAndContentsFromStream(readStream)
     .then(() => {
