@@ -4,6 +4,7 @@
   "description": "Easily add/change data in YAML front matter",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js lib/ tests/",
     "test": "mocha tests/"
   },
   "repository": "git@github.com:mikrostew/write-yaml-front-matter.git",
@@ -19,9 +20,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^7.11.0",
     "mocha": "^8.2.0"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "^10.12 || >= 12"
   }
 }
