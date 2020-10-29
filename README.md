@@ -50,7 +50,11 @@ Some other contents`
 
 ### Errors
 
-TODO
+`Error parsing YAML in front matter` if there was a parsing error
+
+`Top level should be a key/value map` if the YAML is not a YAML Map at the top level
+
+`Non-terminated YAML front matter` if the YAML front matter does not have a closing `---` line
 
 
 ## `writeFile(file, inputYaml)`

@@ -112,7 +112,7 @@ OK`,
 `---
 5
 ---`,
-'Top level should be an object',
+'Top level should be a key/value map',
       );
     });
 
@@ -121,7 +121,7 @@ OK`,
 `---
 true
 ---`,
-'Top level should be an object',
+'Top level should be a key/value map',
       );
     });
 
@@ -132,7 +132,7 @@ true
 - b
 - c
 ---`,
-'Top level should be an object',
+'Top level should be a key/value map',
       );
     });
 
@@ -141,7 +141,7 @@ true
 `---
 what
 ---`,
-'Top level should be an object',
+'Top level should be a key/value map',
       );
     });
 
