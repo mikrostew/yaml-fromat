@@ -12,14 +12,14 @@ Install the library in your project using your package manager of choice:
 
 Install the CLI globally (I recommend using [Volta](https://github.com/volta-cli/volta) as your Node manager):
 
-* (CLI is not implemented yet, but it will use `npm i -g yaml-fromat` - #17)
+* ([CLI is not implemented yet](https://github.com/mikrostew/yaml-fromat/issues/17), but it will use `npm i -g yaml-fromat`)
 
 
 # API
 
 ## `readFile(file)`
 
-Like `readString`, but for files. Not yet implemented: #18
+Like `readString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/18)
 
 ## `readString(string)`
 
@@ -55,7 +55,7 @@ TODO
 
 ## `writeFile(file, inputYaml)`
 
-Like `writeString`, but for files. Not yet implemented: #19
+Like `writeString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/19)
 
 ## `writeString(inputString, inputYaml)`
 
@@ -66,9 +66,9 @@ This attempts to:
 * Maintain the order of existing data
 
 Current limitations, to be addressed:
-* When changing data, you can only overwrite the top-level key/value: #20
-* There is no way to remove top-level keys: #21
-* Multiple blank lines are collapsed to a single line: #22
+* [When changing data, you can only overwrite the top-level key/value](https://github.com/mikrostew/yaml-fromat/issues/20)
+* [There is no way to remove top-level keys](https://github.com/mikrostew/yaml-fromat/issues/21)
+* [Multiple blank lines are collapsed to a single line](https://github.com/mikrostew/yaml-fromat/issues/22)
 
 
 ### Examples
@@ -123,4 +123,4 @@ TODO
 
 # CLI
 
-Not yet implemented: #17
+[Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/17)
