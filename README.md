@@ -122,7 +122,13 @@ Other contents`,
 
 ### Errors
 
-TODO
+`Non-terminated YAML front matter` if the YAML front matter does not have a closing `---` line
+
+`Error parsing YAML in front matter` if there was a parsing error
+
+`Error parsing input YAML` if the input YAML cannot be parsed for some reason
+
+`Cannot add non-map items at the top level` if the input YAML is not a Map (so this can't add key/value items)
 
 
 # CLI
