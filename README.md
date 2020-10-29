@@ -12,14 +12,14 @@ Install the library in your project using your package manager of choice:
 
 Install the CLI globally (I recommend using [Volta](https://github.com/volta-cli/volta) as your Node manager):
 
-* Not implemented yet, but it should be `npm i -g yaml-fromat` - TODO: issue
+* (CLI is not implemented yet, but it will use `npm i -g yaml-fromat` - #17)
 
 
 # API
 
 ## `readFile(file)`
 
-Like `readString`, but for files. Unimplemented: TODO: issue
+Like `readString`, but for files. Not yet implemented: #18
 
 ## `readString(string)`
 
@@ -55,7 +55,7 @@ TODO
 
 ## `writeFile(file, inputYaml)`
 
-Like `writeString`, but for files. Unimplemented: TODO: issue
+Like `writeString`, but for files. Not yet implemented: #19
 
 ## `writeString(inputString, inputYaml)`
 
@@ -66,18 +66,16 @@ This attempts to:
 * Maintain the order of existing data
 
 Current limitations, to be addressed:
-* When changing data, you can only overwrite the top-level key/value
-* There is no way to remove top-level keys
-* Multiple blank lines are collapsed to a single line
-
-TODO: make issues for those ^^
+* When changing data, you can only overwrite the top-level key/value: #20
+* There is no way to remove top-level keys: #21
+* Multiple blank lines are collapsed to a single line: #22
 
 
 ### Examples
 
 Adding new data
 
-```
+```javascript
 const yamlFM = require('yaml-fromat');
 
 yamlFM.writeString(
@@ -99,7 +97,7 @@ Some other things`,
 
 Changing existing data
 
-```
+```javascript
 const yamlFM = require('yaml-fromat');
 
 yamlFM.writeString(
@@ -125,4 +123,4 @@ TODO
 
 # CLI
 
-Unimplemented: TODO: issue for this
+Not yet implemented: #17
