@@ -17,11 +17,11 @@ Install the CLI globally (I recommend using [Volta](https://github.com/volta-cli
 
 # API
 
-## `readFile(file)`
+## readFile(file)
 
 Like `readString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/18)
 
-## `readString(string)`
+## readString(string)
 
 Returns a Promise that resolves to a JSON object containing the front matter in the input string. This includes the non-front-matter contents (the rest of the string) in `_contents`.
 
@@ -57,11 +57,11 @@ Some other contents`
 `Non-terminated YAML front matter` if the YAML front matter does not have a closing `---` line
 
 
-## `writeFile(file, inputYaml)`
+## writeFile(file, inputYaml)
 
 Like `writeString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/19)
 
-## `writeString(inputString, inputYaml)`
+## writeString(inputString, inputYaml)
 
 Returns a Promise that resolves to a string where the input YAML has been combined with the existing front matter from the input string. New data will be appended to the existing front matter. Changes to existing keys will be made in-place. If input string does not contain front matter, a new block of YAML front matter will be added.
 
