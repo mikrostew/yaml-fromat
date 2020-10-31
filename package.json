@@ -1,6 +1,6 @@
 {
   "name": "yaml-fromat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Read and write YAML front matter",
   "main": "index.js",
   "scripts": {
