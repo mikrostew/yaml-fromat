@@ -1,6 +1,6 @@
 {
   "name": "write-yaml-front-matter",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Easily add/change data in YAML front matter",
   "main": "index.js",
   "scripts": {
