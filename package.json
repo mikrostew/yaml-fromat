@@ -1,13 +1,13 @@
 {
-  "name": "write-yaml-front-matter",
+  "name": "yaml-fromat",
   "version": "0.1.0",
-  "description": "Easily add/change data in YAML front matter",
+  "description": "Read and write YAML front matter",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js lib/ tests/",
     "test": "mocha tests/"
   },
-  "repository": "git@github.com:mikrostew/write-yaml-front-matter.git",
+  "repository": "git@github.com:mikrostew/yaml-fromat.git",
   "author": "Michael Stewart <mikrostew@gmail.com>",
   "license": "MIT",
   "private": false,
