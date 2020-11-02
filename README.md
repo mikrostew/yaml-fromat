@@ -134,3 +134,10 @@ Other contents`,
 # CLI
 
 [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/17)
+
+
+# Development
+
+Run the tests with `yarn run test` or `yarn run test --watch`
+
+Check code coverage with `yarn run coverage`

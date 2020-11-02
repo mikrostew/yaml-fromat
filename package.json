@@ -4,6 +4,7 @@
   "description": "Read and write YAML front matter",
   "main": "index.js",
   "scripts": {
+    "coverage": "nyc --check-coverage --lines 100 --per-file mocha tests/",
     "lint": "eslint index.js lib/ tests/",
     "test": "mocha tests/"
   },
@@ -21,7 +22,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^7.12.0",
-    "mocha": "^8.2.0"
+    "mocha": "^8.2.0",
+    "nyc": "^15.1.0"
   },
   "engines": {
     "node": "^10.12 || >= 12"
