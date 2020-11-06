@@ -1,22 +1,41 @@
-const readString = require('../lib/read-string');
+const fs = require('fs');
+const readFile = require('../lib/read-file');
 const { expect } = require('chai');
+const temp = require('temp').track();
 
 // helpers
 
-function testReadString(inputString, expectedJson) {
-  return readString(inputString).then((result) => {
+function testReadFile(inputFileContents, expectedJson) {
+  // setup a file with those contents
+  const tempFile = temp.openSync();
+  fs.writeSync(tempFile.fd, inputFileContents);
+
+  return readFile(tempFile.path).then((result) => {
     expect(result).to.deep.equal(expectedJson);
   });
 }
 
-function testReadStringErrors(inputString, expectedErrMsg) {
-  return readString(inputString)
+function testReadFileErrors(inputFileContents, expectedErrMsg) {
+  // setup a file with those contents, maybe
+  let tempFile;
+  if (inputFileContents === null) {
+    // test file doesn't exist
+    tempFile = { path: '/path/to/some/non/existent/file' };
+  } else if (inputFileContents === undefined) {
+    // test undefined input
+    tempFile = undefined;
+  } else {
+    tempFile = temp.openSync();
+    fs.writeSync(tempFile.fd, inputFileContents);
+  }
+
+  return readFile(tempFile ? tempFile.path : undefined)
     .then(() => {
-      throw new Error('[read-string-errors] Expected this to fail');
+      throw new Error('[read-file-errors] Expected this to fail');
     })
     .catch((e) => {
       // re-throw that ^^ error instead of checking the message
-      if (e.message.includes('read-string-errors')) {
+      if (e.message.includes('read-file-errors')) {
         throw e;
       }
       expect(e.message).to.include(expectedErrMsg);
@@ -25,10 +44,10 @@ function testReadStringErrors(inputString, expectedErrMsg) {
 
 // tests
 
-describe('read-string', () => {
+describe('read-file', () => {
 
-  it('empty string', () => {
-    return testReadString(
+  it('empty file', () => {
+    return testReadFile(
 '',
 {
   _contents: '',
@@ -37,7 +56,7 @@ describe('read-string', () => {
   });
 
   it('no front matter', () => {
-    return testReadString(
+    return testReadFile(
 'no front matter here',
 {
   _contents: 'no front matter here',
@@ -46,7 +65,7 @@ describe('read-string', () => {
   });
 
   it('empty front matter', () => {
-    return testReadString(
+    return testReadFile(
 `---
 ---`,
 {
@@ -56,7 +75,7 @@ describe('read-string', () => {
   });
 
   it('key/value pair', () => {
-    return testReadString(
+    return testReadFile(
 `---
 foo: bar
 ---`,
@@ -68,7 +87,7 @@ foo: bar
   });
 
   it('complicated stuff', () => {
-    return testReadString(
+    return testReadFile(
 `---
 foo: bar
 things:
@@ -88,7 +107,7 @@ thing:
   });
 
   it('front matter and contents', () => {
-    return testReadString(
+    return testReadFile(
 `---
 foo: bar
 thing:
@@ -107,22 +126,22 @@ OK`,
 
   describe('errors', () => {
 
-    it('missing argument', () => {
-      return testReadStringErrors(
-undefined,
-'Expected input type string',
+    it('non-existent file', () => {
+      return testReadFileErrors(
+null,
+'Error reading input stream',
       );
     });
 
-    it('wrong argument type', () => {
-      return testReadStringErrors(
-[1, 2, 3, 4],
-'Expected input type string',
+    it('undefined input', () => {
+      return testReadFileErrors(
+undefined,
+'Could not open file for reading',
       );
     });
 
     it('top level scalar', () => {
-      return testReadStringErrors(
+      return testReadFileErrors(
 `---
 5
 ---`,
@@ -131,7 +150,7 @@ undefined,
     });
 
     it('top level boolean', () => {
-      return testReadStringErrors(
+      return testReadFileErrors(
 `---
 true
 ---`,
@@ -140,7 +159,7 @@ true
     });
 
     it('top level array', () => {
-      return testReadStringErrors(
+      return testReadFileErrors(
 `---
 - a
 - b
@@ -151,7 +170,7 @@ true
     });
 
     it('top level string', () => {
-      return testReadStringErrors(
+      return testReadFileErrors(
 `---
 what
 ---`,
@@ -160,7 +179,7 @@ what
     });
 
     it('malformed yaml', () => {
-      return testReadStringErrors(
+      return testReadFileErrors(
 `---
 oops: [ a, b
 ---`,

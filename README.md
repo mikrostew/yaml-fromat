@@ -19,17 +19,32 @@ Install the CLI globally (I recommend using [Volta](https://github.com/volta-cli
 
 ## readFile(file)
 
-Like `readString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/18)
+Returns a Promise that resolves to a JSON object containing the front matter in the input file. This includes the non-front-matter contents (the rest of the file) in `_contents`.
+
+The YAML front matter should be the first thing in the file, with no blank lines before it.
+
+```javascript
+const yamlFM = require('yaml-fromat');
+
+// file.md contains:
+// ---
+// key: value
+// ---
+//
+// Some other contents`
+yamlFM.readFile('some/file.md').then(console.log);
+
+// {
+//   key: 'value',
+//   _contents: '\nSome other contents'
+// }
+```
 
 ## readString(string)
 
 Returns a Promise that resolves to a JSON object containing the front matter in the input string. This includes the non-front-matter contents (the rest of the string) in `_contents`.
 
-The YAML front matter should be the first thing in the file, with no blank lines before it.
-
-### Examples
-
-Reading YAML front matter from a string
+The YAML front matter should be the first thing in the string, with no blank lines before it.
 
 ```javascript
 const yamlFM = require('yaml-fromat');
