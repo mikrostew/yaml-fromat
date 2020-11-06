@@ -107,6 +107,20 @@ OK`,
 
   describe('errors', () => {
 
+    it('missing argument', () => {
+      return testReadStringErrors(
+undefined,
+'Expected input type string',
+      );
+    });
+
+    it('wrong argument type', () => {
+      return testReadStringErrors(
+[1, 2, 3, 4],
+'Expected input type string',
+      );
+    });
+
     it('top level scalar', () => {
       return testReadStringErrors(
 `---
