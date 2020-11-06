@@ -15,8 +15,21 @@ function testReadFile(inputFileContents, expectedJson) {
   });
 }
 
-function testReadFileErrors(inputFile, expectedErrMsg) {
-  return readFile(inputFile)
+function testReadFileErrors(inputFileContents, expectedErrMsg) {
+  // setup a file with those contents, maybe
+  let tempFile;
+  if (inputFileContents === null) {
+    // test file doesn't exist
+    tempFile = { path: '/path/to/some/non/existent/file' };
+  } else if (inputFileContents === undefined) {
+    // test undefined input
+    tempFile = undefined;
+  } else {
+    tempFile = temp.openSync();
+    fs.writeSync(tempFile.fd, inputFileContents);
+  }
+
+  return readFile(tempFile ? tempFile.path : undefined)
     .then(() => {
       throw new Error('[read-file-errors] Expected this to fail');
     })
@@ -113,7 +126,21 @@ OK`,
 
   describe('errors', () => {
 
-    it.skip('file no exist', () => {
+    it('non-existent file', () => {
+      return testReadFileErrors(
+null,
+'Error reading input stream',
+      );
+    });
+
+    it('undefined input', () => {
+      return testReadFileErrors(
+undefined,
+'Could not open file for reading',
+      );
+    });
+
+    it('top level scalar', () => {
       return testReadFileErrors(
 `---
 5
@@ -122,16 +149,7 @@ OK`,
       );
     });
 
-    it.skip('top level scalar', () => {
-      return testReadFileErrors(
-`---
-5
----`,
-'Top level should be a key/value map',
-      );
-    });
-
-    it.skip('top level boolean', () => {
+    it('top level boolean', () => {
       return testReadFileErrors(
 `---
 true
@@ -140,7 +158,7 @@ true
       );
     });
 
-    it.skip('top level array', () => {
+    it('top level array', () => {
       return testReadFileErrors(
 `---
 - a
@@ -151,7 +169,7 @@ true
       );
     });
 
-    it.skip('top level string', () => {
+    it('top level string', () => {
       return testReadFileErrors(
 `---
 what
@@ -160,7 +178,7 @@ what
       );
     });
 
-    it.skip('malformed yaml', () => {
+    it('malformed yaml', () => {
       return testReadFileErrors(
 `---
 oops: [ a, b
