@@ -26,7 +26,7 @@ function testReadFileErrors(inputFileContents, expectedErrMsg) {
     tempFile = undefined;
   } else {
     tempFile = temp.openSync();
-    fs.writeSync(tempFile.fd, inputFileContents);
+    fs.writeFileSync(tempFile.path, inputFileContents);
   }
 
   return readFile(tempFile ? tempFile.path : undefined)

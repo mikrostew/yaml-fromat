@@ -17,8 +17,27 @@ function testWriteFile(inputFileContents, inputYaml, expectedContents) {
 }
 
 // TODO
-function testWriteFileErrors(inputString, inputYaml, expectedErrMsg) {
-  return writeFile(inputString, inputYaml)
+function testWriteFileErrors(inputFileContents, inputYaml, expectedErrMsg) {
+  // setup a file with those contents, maybe
+  let tempFile;
+  if (inputFileContents === null) {
+    // test file doesn't exist
+    tempFile = { path: '/path/to/some/non/existent/file' };
+  } else if (inputFileContents === undefined) {
+    // test undefined input
+    tempFile = undefined;
+  } else if (inputFileContents === '[read-only]') {
+    // test read-only file
+    tempFile = temp.openSync();
+    fs.writeFileSync(tempFile.path, inputFileContents);
+    // set file mode to read-only
+    fs.chmodSync(tempFile.path, 0o400);
+  } else {
+    tempFile = temp.openSync();
+    fs.writeFileSync(tempFile.path, inputFileContents);
+  }
+
+  return writeFile(tempFile ? tempFile.path : undefined, inputYaml)
     .then(() => {
       throw new Error('[write-file-errors] Expected this to fail');
     })
@@ -154,8 +173,31 @@ Some contents`,
 
   describe('errors', () => {
 
-    // TODO
-    it.skip('top level scalar', () => {
+    it('non-existent file', () => {
+      return testWriteFileErrors(
+null,
+'',
+'Error reading input stream',
+      );
+    });
+
+    it('undefined input', () => {
+      return testWriteFileErrors(
+undefined,
+'',
+'Could not open file for reading',
+      );
+    });
+
+    it('read-only file', () => {
+      return testWriteFileErrors(
+'[read-only]',
+'',
+'Error writing file',
+      );
+    });
+
+    it('top level scalar', () => {
       return testWriteFileErrors(
 `---
 foo: bar
@@ -165,8 +207,7 @@ foo: bar
       );
     });
 
-    // TODO
-    it.skip('malformed yaml', () => {
+    it('malformed yaml', () => {
       return testWriteFileErrors(
 `---
 oops:
