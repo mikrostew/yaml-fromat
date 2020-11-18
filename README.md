@@ -74,7 +74,29 @@ Some other contents`
 
 ## writeFile(file, inputYaml)
 
-Like `writeString`, but for files. [Not yet implemented](https://github.com/mikrostew/yaml-fromat/issues/19)
+Returns a Promise that resolves when the input YAML has been combined with the existing YAML in the input file. New data will be appended to the existing front matter. Changes to existing keys will be made in-place. If input file does not contain front matter, a new block of YAML front matter will be added.
+
+The YAML front matter should be the first thing in the file, with no blank lines before it.
+
+```javascript
+const yamlFM = require('yaml-fromat');
+
+// file.md contains:
+// ---
+// key: value
+// ---
+//
+// Some other contents`
+yamlFM.writeFile('file.md', 'foo: bar').then(console.log);
+
+// file.md now contains:
+// ---
+// key: value
+// foo: bar
+// ---
+//
+// Some other contents`
+```
 
 ## writeString(inputString, inputYaml)
 
