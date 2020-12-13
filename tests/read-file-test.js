@@ -8,7 +8,7 @@ const temp = require('temp').track();
 function testReadFile(inputFileContents, expectedJson) {
   // setup a file with those contents
   const tempFile = temp.openSync();
-  fs.writeSync(tempFile.fd, inputFileContents);
+  fs.writeFileSync(tempFile.path, inputFileContents);
 
   return readFile(tempFile.path).then((result) => {
     expect(result).to.deep.equal(expectedJson);
@@ -26,7 +26,7 @@ function testReadFileErrors(inputFileContents, expectedErrMsg) {
     tempFile = undefined;
   } else {
     tempFile = temp.openSync();
-    fs.writeSync(tempFile.fd, inputFileContents);
+    fs.writeFileSync(tempFile.path, inputFileContents);
   }
 
   return readFile(tempFile ? tempFile.path : undefined)
